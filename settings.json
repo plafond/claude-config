@@ -1,0 +1,407 @@
+{
+  "alwaysThinkingEnabled": true,
+  "mcpServers": {
+    "github-mcp": {
+      "name": "GitHub MCP Server",
+      "description": "GitHub API integration for repository management and collaboration",
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}",
+        "GITHUB_API_URL": "https://api.github.com"
+      }
+    },
+    "localstack-pro": {
+      "name": "LocalStack Pro MCP Server",
+      "description": "LocalStack Pro features and AWS service emulation",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "host",
+        "-v",
+        "${workspaceFolder}:/workspace",
+        "-w",
+        "/workspace",
+        "localstack/localstack-pro"
+      ],
+      "env": {
+        "AWS_PROFILE": "${AWS_PROFILE:-${ASP_PROFILE:-default}}",
+        "AWS_REGION": "${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}",
+        "LOCALSTACK_ENDPOINT": "http://localhost:4566",
+        "LOCALSTACK_API_KEY": "${LOCALSTACK_API_KEY}"
+      }
+    },
+    "localstack-source": {
+      "name": "LocalStack Source Code MCP Server",
+      "description": "Direct access to LocalStack community and pro edition source code repositories",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "host",
+        "-v",
+        "${workspaceFolder}:/workspace",
+        "-v",
+        "${env:LOCALSTACK_COMMUNITY_PATH}:/localstack-community:ro",
+        "-v",
+        "${env:LOCALSTACK_PRO_PATH}:/localstack-pro:ro",
+        "-v",
+        "${env:LOCALSTACK_PRIVATE_REPOS}:/localstack-private:ro",
+        "-w",
+        "/workspace",
+        "localstack/localstack-pro"
+      ],
+      "env": {
+        "LOCALSTACK_ENDPOINT": "http://localhost:4566",
+        "LOCALSTACK_API_KEY": "${env:LOCALSTACK_API_KEY}",
+        "LOCALSTACK_SOURCE_COMMUNITY": "/localstack-community",
+        "LOCALSTACK_SOURCE_PRO": "/localstack-pro",
+        "LOCALSTACK_PRIVATE_REPOS": "/localstack-private"
+      }
+    },
+    "localstack-mcp-private": {
+      "name": "LocalStack Private MCP Server",
+      "description": "Private LocalStack MCP server with internal features",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "host",
+        "-v",
+        "${workspaceFolder}:/workspace",
+        "-v",
+        "${LOCALSTACK_MCP_PRIVATE_PATH}:/mcp-server:ro",
+        "-v",
+        "${LOCALSTACK_COMMUNITY_PATH}:/localstack-community:ro",
+        "-v",
+        "${LOCALSTACK_PRO_PATH}:/localstack-pro:ro",
+        "-w",
+        "/workspace",
+        "python:3.11-slim",
+        "python",
+        "/mcp-server/main.py"
+      ],
+      "env": {
+        "LOCALSTACK_ENDPOINT": "http://localhost:4566",
+        "LOCALSTACK_API_KEY": "${LOCALSTACK_API_KEY}",
+        "LOCALSTACK_MCP_CONFIG": "/mcp-server/config.json",
+        "LOCALSTACK_INTERNAL_FEATURES": "true"
+      }
+    },
+    "localstack-k8s-operator": {
+      "name": "LocalStack Kubernetes Operator MCP Server",
+      "description": "LocalStack Kubernetes operator management and custom resources",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "-v",
+        "${workspaceFolder}:/workspace",
+        "-v",
+        "${LOCALSTACK_K8S_OPERATOR_PATH}:/k8s-operator:ro",
+        "-v",
+        "${KUBECONFIG}:/kubeconfig:ro",
+        "-w",
+        "/workspace",
+        "python:3.11-slim",
+        "python",
+        "/k8s-operator/main.py"
+      ],
+      "env": {
+        "KUBECONFIG": "/kubeconfig",
+        "LOCALSTACK_K8S_NAMESPACE": "localstack",
+        "OPERATOR_CONFIG_PATH": "/k8s-operator/config"
+      }
+    },
+    "localstack-cli": {
+      "name": "LocalStack CLI MCP Server",
+      "description": "LocalStack command-line interface operations",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "host",
+        "-v",
+        "${workspaceFolder}:/workspace",
+        "-v",
+        "/home/pat/.localstack:/root/.localstack",
+        "-w",
+        "/workspace",
+        "localstack/localstack-cli"
+      ],
+      "env": {
+        "LOCALSTACK_ENDPOINT": "http://localhost:4566",
+        "LOCALSTACK_API_KEY": "${LOCALSTACK_API_KEY}",
+        "AWS_PROFILE": "${AWS_PROFILE:-${ASP_PROFILE:-default}}",
+        "AWS_REGION": "${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}"
+      }
+    },
+    "filesystem-mcp": {
+      "name": "Filesystem MCP Server",
+      "description": "Secure filesystem operations with configurable access controls",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}"
+      ]
+    },
+    "memory-mcp": {
+      "name": "Memory MCP Server",
+      "description": "Knowledge graph-based memory system for context retention",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    },
+    "postgres-mcp": {
+      "name": "PostgreSQL MCP Server",
+      "description": "PostgreSQL database interactions and queries",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${env:POSTGRES_CONNECTION_STRING}"
+      ]
+    },
+    "slack-mcp": {
+      "name": "Slack MCP Server",
+      "description": "Slack workspace integration and messaging",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-slack"
+      ],
+      "env": {
+        "SLACK_BOT_TOKEN": "${env:SLACK_BOT_TOKEN}",
+        "SLACK_TEAM_ID": "${env:SLACK_TEAM_ID}"
+      }
+    },
+    "brave-search-mcp": {
+      "name": "Brave Search MCP Server",
+      "description": "Web search integration via Brave Search API",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": "${env:BRAVE_API_KEY}"
+      }
+    },
+    "puppeteer-mcp": {
+      "name": "Puppeteer MCP Server",
+      "description": "Browser automation and web scraping with Puppeteer",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-puppeteer"
+      ]
+    },
+    "aws-ccapi": {
+      "name": "AWS Cloud Control API MCP Server",
+      "description": "Natural language AWS infrastructure management via Cloud Control API",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@awslabs/mcp-server-aws-ccapi"
+      ],
+      "env": {
+        "AWS_PROFILE": "${AWS_PROFILE:-${ASP_PROFILE:-default}}",
+        "AWS_REGION": "${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}"
+      }
+    },
+    "aws-cdk": {
+      "name": "AWS CDK MCP Server",
+      "description": "AWS CDK infrastructure as code development",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@awslabs/mcp-server-cdk"
+      ],
+      "env": {
+        "AWS_PROFILE": "${AWS_PROFILE:-${ASP_PROFILE:-default}}",
+        "AWS_REGION": "${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}"
+      }
+    },
+    "aws-terraform": {
+      "name": "AWS Terraform MCP Server",
+      "description": "Terraform infrastructure management for AWS",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@awslabs/mcp-server-terraform"
+      ],
+      "env": {
+        "AWS_PROFILE": "${AWS_PROFILE:-${ASP_PROFILE:-default}}",
+        "AWS_REGION": "${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}"
+      }
+    },
+    "docker": {
+      "name": "Docker MCP Server",
+      "description": "Docker container lifecycle management and operations",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@quantgeekdev/docker-mcp"
+      ],
+      "env": {
+        "DOCKER_HOST": "${DOCKER_HOST:-unix:///var/run/docker.sock}"
+      }
+    },
+    "kubectl": {
+      "name": "Kubernetes MCP Server",
+      "description": "Kubernetes cluster operations via kubectl",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "--network",
+        "host",
+        "-v",
+        "${KUBECONFIG:-${HOME}/.kube/config}:/root/.kube/config:ro",
+        "-v",
+        "${workspaceFolder}:/workspace",
+        "-w",
+        "/workspace",
+        "bitnami/kubectl:latest"
+      ],
+      "env": {
+        "KUBECONFIG": "/root/.kube/config"
+      }
+    },
+    "aws-serverless": {
+      "name": "AWS Serverless MCP Server",
+      "description": "Serverless application development (Lambda, API Gateway, DynamoDB)",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@awslabs/mcp-server-serverless"
+      ],
+      "env": {
+        "AWS_PROFILE": "${AWS_PROFILE:-${ASP_PROFILE:-default}}",
+        "AWS_REGION": "${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}"
+      }
+    },
+    "aws-eks": {
+      "name": "AWS EKS MCP Server",
+      "description": "Amazon EKS cluster management and operations",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@awslabs/mcp-server-eks"
+      ],
+      "env": {
+        "AWS_PROFILE": "${AWS_PROFILE:-${ASP_PROFILE:-default}}",
+        "AWS_REGION": "${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}"
+      }
+    }
+  },
+  "security": {
+    "auth": {
+      "selectedType": "gemini-api-key"
+    }
+  },
+  "ui": {
+    "theme": "Atom One"
+  },
+  "globalShortcut": "CommandOrControl+;",
+  "serverConfiguration": {
+    "timeout": 45000,
+    "retryAttempts": 3,
+    "logLevel": "info",
+    "healthCheck": {
+      "enabled": true,
+      "interval": "30s"
+    }
+  },
+  "usage": {
+    "description": "Official MCP servers, AWS infrastructure tools, and LocalStack-specific integrations",
+    "categories": {
+      "official": [
+        "github-mcp",
+        "filesystem-mcp",
+        "memory-mcp",
+        "postgres-mcp",
+        "slack-mcp",
+        "brave-search-mcp",
+        "puppeteer-mcp"
+      ],
+      "aws": [
+        "aws-ccapi",
+        "aws-cdk",
+        "aws-terraform",
+        "aws-serverless",
+        "aws-eks"
+      ],
+      "containers": [
+        "docker",
+        "kubectl"
+      ],
+      "localstack": [
+        "localstack-pro",
+        "localstack-cli",
+        "localstack-source",
+        "localstack-mcp-private",
+        "localstack-k8s-operator"
+      ],
+      "collaboration": [
+        "github-mcp",
+        "slack-mcp"
+      ],
+      "data": [
+        "postgres-mcp",
+        "memory-mcp",
+        "filesystem-mcp"
+      ],
+      "automation": [
+        "puppeteer-mcp",
+        "brave-search-mcp"
+      ]
+    },
+    "prerequisites": {
+      "nodejs": "Node.js v18+ for npx-based MCP servers",
+      "docker": "Docker Engine 20.10+ for LocalStack servers"
+    },
+    "environmentVariables": {
+      "required": [
+        "GITHUB_PERSONAL_ACCESS_TOKEN - GitHub token with repo access"
+      ],
+      "optional": [
+        "LOCALSTACK_API_KEY - LocalStack Pro license key",
+        "LOCALSTACK_COMMUNITY_PATH - Path to LocalStack community source",
+        "LOCALSTACK_PRO_PATH - Path to LocalStack pro edition source",
+        "LOCALSTACK_PRIVATE_REPOS - Path to private LocalStack repositories",
+        "LOCALSTACK_MCP_PRIVATE_PATH - Path to private LocalStack MCP server",
+        "LOCALSTACK_K8S_OPERATOR_PATH - Path to LocalStack K8s operator source",
+        "POSTGRES_CONNECTION_STRING - PostgreSQL connection string",
+        "SLACK_BOT_TOKEN - Slack bot token for workspace integration",
+        "SLACK_TEAM_ID - Slack team/workspace ID",
+        "BRAVE_API_KEY - Brave Search API key"
+      ]
+    },
+    "quickStart": [
+      "1. Install Node.js 18+ and Docker for MCP servers",
+      "2. Set GITHUB_PERSONAL_ACCESS_TOKEN environment variable",
+      "3. Configure AWS_PROFILE and AWS_REGION for AWS MCP servers",
+      "4. Configure DOCKER_HOST and KUBECONFIG for container MCP servers",
+      "5. Configure optional variables for specific MCP servers",
+      "6. Restart Claude Code to load new MCP server configurations",
+      "7. Use memory-mcp for persistent context across sessions"
+    ]
+  }
+}
