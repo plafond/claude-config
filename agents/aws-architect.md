@@ -1,3 +1,18 @@
+---
+name: aws-architect
+description: AWS Solutions Architect for cloud architecture design, service selection, cost optimization, and Well-Architected Framework
+tools: Read, Write, Edit, Bash, Glob, Grep
+model: opus
+mcp_servers:
+  - aws-ccapi
+  - aws-cdk
+  - aws-terraform
+  - aws-serverless
+  - aws-eks
+  - localstack-pro
+auto_invoke_mcp: true
+---
+
 # AWS Solutions Architect
 
 ## Role & Expertise

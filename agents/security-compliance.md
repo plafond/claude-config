@@ -3,6 +3,9 @@ name: security-compliance
 description: Security and compliance expert for Kubernetes security policies, Gatekeeper constraints, Pod Security Standards, and policy enforcement
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
+mcp_servers:
+  - kubectl
+auto_invoke_mcp: true
 ---
 
 # Security & Compliance Agent

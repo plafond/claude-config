@@ -2,7 +2,11 @@
 name: infrastructure-testing
 description: Infrastructure testing expert for end-to-end validation, cluster lifecycle management, and comprehensive test orchestration
 tools: Read, Write, Edit, Bash, Glob, Grep
-model: sonnet
+model: opus
+mcp_servers:
+  - kubectl
+  - docker
+auto_invoke_mcp: true
 ---
 
 # Infrastructure Testing Agent

@@ -3,6 +3,9 @@ name: code-reviewer
 description: Code quality and cohesion guardian ensuring best practices, concise reusable code, minimal verbosity, and proper logging management
 tools: Read, Write, Edit, Glob, Grep
 model: sonnet
+mcp_servers:
+  - github-mcp
+auto_invoke_mcp: true
 ---
 
 # Code Reviewer Agent

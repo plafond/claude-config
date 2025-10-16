@@ -3,6 +3,12 @@ name: gitops-pipeline
 description: GitOps deployment specialist for ArgoCD, Flux, declarative continuous deployment, and automated configuration management
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
+mcp_servers:
+  - kubectl
+  - github-mcp
+  - aws-cdk
+  - aws-terraform
+auto_invoke_mcp: true
 ---
 
 # GitOps Pipeline Agent

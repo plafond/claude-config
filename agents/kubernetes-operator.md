@@ -3,6 +3,11 @@ name: kubernetes-operator
 description: Kubernetes operator development specialist for CRDs, controller development, operator lifecycle management, and advanced API patterns
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
+mcp_servers:
+  - kubectl
+  - github-mcp
+  - localstack-k8s-operator
+auto_invoke_mcp: true
 ---
 
 # Kubernetes Operator Agent

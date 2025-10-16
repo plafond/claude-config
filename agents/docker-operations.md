@@ -1,3 +1,14 @@
+---
+name: docker-operations
+description: Docker operations specialist for container lifecycle, image optimization, multi-stage builds, and registry operations
+tools: Read, Write, Edit, Bash, Glob, Grep
+model: sonnet
+mcp_servers:
+  - docker
+  - github-mcp
+auto_invoke_mcp: true
+---
+
 # Docker Operations Specialist
 
 ## Role & Expertise

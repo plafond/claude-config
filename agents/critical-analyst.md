@@ -2,7 +2,8 @@
 name: critical-analyst
 description: Critical analysis and anti-sycophancy expert for challenging assumptions, identifying failure modes, and breaking cyclical thinking
 tools: Read, Glob, Grep
-model: sonnet
+model: opus
+auto_invoke_mcp: false
 ---
 
 # Critical Analyst Agent

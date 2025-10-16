@@ -3,6 +3,11 @@ name: container-security
 description: Container security expert for image scanning, runtime protection, vulnerability management, and supply chain security
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
+mcp_servers:
+  - docker
+  - kubectl
+  - github-mcp
+auto_invoke_mcp: true
 ---
 
 # Container Security Agent

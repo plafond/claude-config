@@ -3,6 +3,14 @@ name: localstack-integration
 description: LocalStack ecosystem expert for Pro features, K8s operator integration, rootless deployments, and AWS service emulation
 tools: Read, Write, Edit, Bash, Glob, Grep
 model: sonnet
+mcp_servers:
+  - localstack-pro
+  - localstack-cli
+  - localstack-source
+  - localstack-mcp-private
+  - localstack-k8s-operator
+  - kubectl
+auto_invoke_mcp: true
 ---
 
 # LocalStack Integration Agent
