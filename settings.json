@@ -13,139 +13,19 @@
         "GITHUB_API_URL": "https://api.github.com"
       }
     },
-    "localstack-pro": {
-      "name": "LocalStack Pro MCP Server",
-      "description": "LocalStack Pro features and AWS service emulation",
-      "command": "docker",
+    "localstack-mcp-server": {
+      "name": "LocalStack MCP Server",
+      "description": "Official LocalStack MCP server with lifecycle management, infrastructure deployment, log analysis, IAM policy analyzer, chaos engineering, cloud pods, and AWS client integration",
+      "command": "npx",
       "args": [
-        "run",
-        "--rm",
-        "-i",
-        "--network",
-        "host",
-        "-v",
-        "${workspaceFolder}:/workspace",
-        "-w",
-        "/workspace",
-        "localstack/localstack-pro"
+        "-y",
+        "@localstack/localstack-mcp-server"
       ],
       "env": {
-        "AWS_PROFILE": "${AWS_PROFILE:-${ASP_PROFILE:-default}}",
+        "LOCALSTACK_AUTH_TOKEN": "${env:LOCALSTACK_AUTH_TOKEN}",
+        "LOCALSTACK_ENDPOINT": "${env:LOCALSTACK_ENDPOINT:-http://localhost:4566}",
         "AWS_REGION": "${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}",
-        "LOCALSTACK_ENDPOINT": "http://localhost:4566",
-        "LOCALSTACK_API_KEY": "${LOCALSTACK_API_KEY}"
-      }
-    },
-    "localstack-source": {
-      "name": "LocalStack Source Code MCP Server",
-      "description": "Direct access to LocalStack community and pro edition source code repositories",
-      "command": "docker",
-      "args": [
-        "run",
-        "--rm",
-        "-i",
-        "--network",
-        "host",
-        "-v",
-        "${workspaceFolder}:/workspace",
-        "-v",
-        "${env:LOCALSTACK_COMMUNITY_PATH}:/localstack-community:ro",
-        "-v",
-        "${env:LOCALSTACK_PRO_PATH}:/localstack-pro:ro",
-        "-v",
-        "${env:LOCALSTACK_PRIVATE_REPOS}:/localstack-private:ro",
-        "-w",
-        "/workspace",
-        "localstack/localstack-pro"
-      ],
-      "env": {
-        "LOCALSTACK_ENDPOINT": "http://localhost:4566",
-        "LOCALSTACK_API_KEY": "${env:LOCALSTACK_API_KEY}",
-        "LOCALSTACK_SOURCE_COMMUNITY": "/localstack-community",
-        "LOCALSTACK_SOURCE_PRO": "/localstack-pro",
-        "LOCALSTACK_PRIVATE_REPOS": "/localstack-private"
-      }
-    },
-    "localstack-mcp-private": {
-      "name": "LocalStack Private MCP Server",
-      "description": "Private LocalStack MCP server with internal features",
-      "command": "docker",
-      "args": [
-        "run",
-        "--rm",
-        "-i",
-        "--network",
-        "host",
-        "-v",
-        "${workspaceFolder}:/workspace",
-        "-v",
-        "${LOCALSTACK_MCP_PRIVATE_PATH}:/mcp-server:ro",
-        "-v",
-        "${LOCALSTACK_COMMUNITY_PATH}:/localstack-community:ro",
-        "-v",
-        "${LOCALSTACK_PRO_PATH}:/localstack-pro:ro",
-        "-w",
-        "/workspace",
-        "python:3.11-slim",
-        "python",
-        "/mcp-server/main.py"
-      ],
-      "env": {
-        "LOCALSTACK_ENDPOINT": "http://localhost:4566",
-        "LOCALSTACK_API_KEY": "${LOCALSTACK_API_KEY}",
-        "LOCALSTACK_MCP_CONFIG": "/mcp-server/config.json",
-        "LOCALSTACK_INTERNAL_FEATURES": "true"
-      }
-    },
-    "localstack-k8s-operator": {
-      "name": "LocalStack Kubernetes Operator MCP Server",
-      "description": "LocalStack Kubernetes operator management and custom resources",
-      "command": "docker",
-      "args": [
-        "run",
-        "--rm",
-        "-i",
-        "-v",
-        "${workspaceFolder}:/workspace",
-        "-v",
-        "${LOCALSTACK_K8S_OPERATOR_PATH}:/k8s-operator:ro",
-        "-v",
-        "${KUBECONFIG}:/kubeconfig:ro",
-        "-w",
-        "/workspace",
-        "python:3.11-slim",
-        "python",
-        "/k8s-operator/main.py"
-      ],
-      "env": {
-        "KUBECONFIG": "/kubeconfig",
-        "LOCALSTACK_K8S_NAMESPACE": "localstack",
-        "OPERATOR_CONFIG_PATH": "/k8s-operator/config"
-      }
-    },
-    "localstack-cli": {
-      "name": "LocalStack CLI MCP Server",
-      "description": "LocalStack command-line interface operations",
-      "command": "docker",
-      "args": [
-        "run",
-        "--rm",
-        "-i",
-        "--network",
-        "host",
-        "-v",
-        "${workspaceFolder}:/workspace",
-        "-v",
-        "/home/pat/.localstack:/root/.localstack",
-        "-w",
-        "/workspace",
-        "localstack/localstack-cli"
-      ],
-      "env": {
-        "LOCALSTACK_ENDPOINT": "http://localhost:4566",
-        "LOCALSTACK_API_KEY": "${LOCALSTACK_API_KEY}",
-        "AWS_PROFILE": "${AWS_PROFILE:-${ASP_PROFILE:-default}}",
-        "AWS_REGION": "${AWS_REGION:-${AWS_DEFAULT_REGION:-us-east-1}}"
+        "DEBUG": "${env:LOCALSTACK_MCP_DEBUG:-false}"
       }
     },
     "filesystem-mcp": {
@@ -353,11 +233,7 @@
         "kubectl"
       ],
       "localstack": [
-        "localstack-pro",
-        "localstack-cli",
-        "localstack-source",
-        "localstack-mcp-private",
-        "localstack-k8s-operator"
+        "localstack-mcp-server"
       ],
       "collaboration": [
         "github-mcp",
@@ -382,12 +258,9 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN - GitHub token with repo access"
       ],
       "optional": [
-        "LOCALSTACK_API_KEY - LocalStack Pro license key",
-        "LOCALSTACK_COMMUNITY_PATH - Path to LocalStack community source",
-        "LOCALSTACK_PRO_PATH - Path to LocalStack pro edition source",
-        "LOCALSTACK_PRIVATE_REPOS - Path to private LocalStack repositories",
-        "LOCALSTACK_MCP_PRIVATE_PATH - Path to private LocalStack MCP server",
-        "LOCALSTACK_K8S_OPERATOR_PATH - Path to LocalStack K8s operator source",
+        "LOCALSTACK_AUTH_TOKEN - LocalStack Pro auth token for licensed features (Cloud Pods, Chaos Engineering, IAM Policy Analyzer)",
+        "LOCALSTACK_ENDPOINT - LocalStack endpoint URL (default: http://localhost:4566)",
+        "LOCALSTACK_MCP_DEBUG - Enable debug logging for LocalStack MCP server (default: false)",
         "POSTGRES_CONNECTION_STRING - PostgreSQL connection string",
         "SLACK_BOT_TOKEN - Slack bot token for workspace integration",
         "SLACK_TEAM_ID - Slack team/workspace ID",
@@ -395,13 +268,14 @@
       ]
     },
     "quickStart": [
-      "1. Install Node.js 18+ and Docker for MCP servers",
+      "1. Install Node.js 20+ and Docker for MCP servers",
       "2. Set GITHUB_PERSONAL_ACCESS_TOKEN environment variable",
-      "3. Configure AWS_PROFILE and AWS_REGION for AWS MCP servers",
-      "4. Configure DOCKER_HOST and KUBECONFIG for container MCP servers",
-      "5. Configure optional variables for specific MCP servers",
-      "6. Restart Claude Code to load new MCP server configurations",
-      "7. Use memory-mcp for persistent context across sessions"
+      "3. Set LOCALSTACK_AUTH_TOKEN for LocalStack Pro features (Cloud Pods, Chaos, IAM Analyzer)",
+      "4. Configure AWS_PROFILE and AWS_REGION for AWS MCP servers",
+      "5. Configure DOCKER_HOST and KUBECONFIG for container MCP servers",
+      "6. Configure optional variables for specific MCP servers",
+      "7. Restart Claude Code to load new MCP server configurations",
+      "8. Use memory-mcp for persistent context across sessions"
     ]
   }
 }
